@@ -2,7 +2,7 @@ const fromSelect = document.querySelector("[name='from_currency']");
 const toSelect = document.querySelector("[name='to_currency']");
 const endpoint =
   "https://v6.exchangerate-api.com/v6/e1fbccf88f4956a60675385f/latest";
-const ratesByBase = {};
+let ratesByBase = {};
 
 const currencies = {
   UAH: "Ukrainian Hryvnya",
@@ -62,12 +62,16 @@ async function convert(amount, from, to) {
     );
   }
   const rates = await fetchRates(from);
-  console.log(rates);
+  console.log('calc', amount, from, to, );
   // store them for next time
-  ratesByBase[from] = rates;
+  ratesByBase = rates;
+
+//   rates.conversion_rates[to]
+//   console.log('ratesby', )
   // convert the amount that they passed in
-  const rate = ratesByBase[from].rates[to];
+  const rate = await ratesByBase.conversion_rates[to];
   const convertedAmount = rate * amount;
+
   console.log(`${amount} ${from} is ${convertedAmount} in ${to}`);
   return convertedAmount;
 }
